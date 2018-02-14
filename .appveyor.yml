@@ -1,0 +1,41 @@
+environment:
+  # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
+  # /E:ON and /V:ON options are not enabled in the batch script intepreter
+  # See: http://stackoverflow.com/a/13751649/163740
+  PYTHON: "C:\\Python36-x64"
+  PYTHON_VERSION: "3.6.4"
+  PYTHON_ARCH: "64"
+  NODEJS_VERSION: "9"
+
+cache:
+  - "%LOCALAPPDATA%\\pip\\Cache"
+  - "%LOCALAPPDATA%\\Yarn"
+
+install:
+    - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+    - python --version
+    - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
+    - pip install --disable-pip-version-check --user --upgrade pip
+    - pip install -r requirements.txt -q
+    - ps: Install-Product node $env:NODEJS_VERSION
+    - npm install -g yarn
+    - ps: cd client; yarn install --silent; cd ..
+
+build_script:
+  - ps: cd client; yarn build; cd ..
+  - python setup.py build_exe
+  - ps: ls build
+
+after_build:
+  - ps: 7z a elv2prop_build.zip build
+
+test_script:
+  - 'echo "no tests"'
+
+after_test:
+  - "python setup.py bdist_msi"
+  - ps: ls dist
+
+artifacts:
+  - path: elv2prop_build.zip
+  - path: dist\*

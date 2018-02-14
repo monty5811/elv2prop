@@ -1,0 +1,105 @@
+@import '../node_modules/shoelace-css/source/css/normalize';
+@import '../node_modules/shoelace-css/source/css/content';
+@import '../node_modules/shoelace-css/source/css/alerts';
+@import '../node_modules/shoelace-css/source/css/badges';
+@import '../node_modules/shoelace-css/source/css/buttons';
+@import '../node_modules/shoelace-css/source/css/forms';
+@import '../node_modules/shoelace-css/source/css/loaders';
+@import '../node_modules/shoelace-css/source/css/progress-bars';
+@import '../node_modules/shoelace-css/source/css/tables';
+@import '../node_modules/shoelace-css/source/css/utilities';
+/* @import '../node_modules/shoelace-css/source/css/dropdowns'; */
+/* @import '../node_modules/shoelace-css/source/css/switches'; */
+/* @import '../node_modules/shoelace-css/source/css/tabs'; */
+
+:root {
+  /* Fonts */
+  --font-sans-serif: sans-serif;
+  --font-serif: serif;
+  --font-system: system-ui;
+  --font-monospace: Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+
+  /* Colors (most courtesy of http://clrs.cc/) */
+  --color-white: white;
+  --color-navy: #001f3f;
+  --color-blue: #0074d9;
+  --color-aqua: #7fdbff;
+  --color-teal: #39cccc;
+  --color-olive: #3d9970;
+  --color-green: #2ecc40;
+  --color-lime: #01ff70;
+  --color-yellow: #ffdc00;
+  --color-orange: #ff851b;
+  --color-red: #ff4136;
+  --color-maroon: #85144b;
+  --color-fuchsia: #f012be;
+  --color-purple: #b10dc9;
+  --color-black: #111;
+  --color-gray: #aaa;
+  --color-silver: #ddd;
+
+  /* States */
+  --state-primary: var(--color-blue);
+  --state-secondary: var(--color-gray);
+  --state-success: var(--color-green);
+  --state-info: var(--color-aqua);
+  --state-warning: var(--color-orange);
+  --state-danger: var(--color-red);
+  --state-light: var(--color-white);
+  --state-dark: var(--color-black);
+
+  /* Components */
+  --component-bg-color: #f2f2f2;
+  --component-border-color: #ddd;
+  --component-border-radius: 0;
+  --component-border-width: 1px;
+  --component-padding-x: 1rem;
+  --component-padding-y: 1rem;
+}
+
+#main {
+    display: grid;
+    grid-template-columns: 12rem calc(100% - 12rem);
+    width: 65%;
+    margin: 2rem auto;
+}
+
+#navbar {
+    margin: 5rem auto;
+    a {
+        margin: 1rem;
+    }
+}
+
+#content {
+    width: 90%;
+    margin: 5rem auto;
+}
+
+.selectedFile {
+    background-color: var(--state-success);
+}
+
+.two-column {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-column-gap: 2rem;
+}
+
+.serviceList {
+    list-style: none;
+    margin: 1rem;
+}
+
+.serviceItem {
+    padding-bottom: 5px;
+    font-size: large;
+    border-bottom: 1px solid gray;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.disabled {
+    color: var(--color-gray);
+    cursor: not-allowed !important;
+}

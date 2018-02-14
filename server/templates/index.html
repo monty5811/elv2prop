@@ -1,0 +1,16 @@
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Elv2ProP</title>
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='elv2prop.css') }}?version={{ version }}"></script>
+</head>
+<body>
+  <div id="elm"></div>
+  <script>
+    var savedConfig = {{ config|safe }};
+    var allFiles = {{ all_files|safe }};
+    var configFromFile = {{ config_from_file|safe }};
+  </script>
+  <script src="{{ url_for('static', filename='app.js') }}?version={{ version }}"></script>
+</body>

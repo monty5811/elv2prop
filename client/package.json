@@ -1,0 +1,27 @@
+{
+  "name": "client",
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {
+    "css": "node build-css --build",
+    "format-elm": "elm-format --yes src/*.elm",
+    "prebuild": "elm-make --yes",
+    "build": "webpack && yarn run css",
+    "watch": "WATCH=true webpack --watch --color --progress",
+    "format": "yarn run format-elm"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "caniuse-lite": "^1.0.30000697",
+    "chalk": "^2.1.0",
+    "cssnano": "^3.10.0",
+    "elm": "^0.18.0",
+    "elm-format": "exp",
+    "elm-webpack-loader": "^4.4.0",
+    "postcss": "^6.0.9",
+    "postcss-cssnext": "^3.0.2",
+    "postcss-import": "^11.1.0",
+    "shoelace-css": "^1.0.0-beta17",
+    "webpack": "^3.11.0"
+  }
+}

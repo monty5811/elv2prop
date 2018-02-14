@@ -14,5 +14,4 @@
 
   - Version:
   - Operating system:
-  - Web Browser:
   - ProPresenter Version:
