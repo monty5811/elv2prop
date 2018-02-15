@@ -17,7 +17,7 @@ def find_files():
 
 build_exe_options = {
     'packages': ['os', 'idna', 'encodings', 'asyncio', 'jinja2', 'requests', ],
-    'excludes': [],
+    'excludes': ['tkinter', 'tcl', ],
     'include_files': find_files(),
     'include_msvcr': True,
 }

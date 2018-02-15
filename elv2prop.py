@@ -52,6 +52,7 @@ def main():
             version=version,
         )
     else:
+        print('Starting server...')
         # on windows or macOS, use webview:
         t = threading.Thread(
             target=server.start,
@@ -59,13 +60,14 @@ def main():
         )
         t.daemon = True
         t.start()
-        sleep(3)  # wait for flask to start
+        sleep(3)  # wait for flask to start, should be smarter about this and check for a 200 response
+        print('Opening client...')
         webview.create_window(
             "E -> P",
             f'{url}',
-            resizable=False,
+            resizable=True,
             width=1000,
-            height=800,
+            height=600,
             background_color='#f2f2f2',
         )
 

@@ -1,4 +1,4 @@
-cx-freeze==5.0.1
+cx-freeze==6.0b1
 flask==0.12.2
 fuzzywuzzy==0.15.1
 psutil==5.3.0
