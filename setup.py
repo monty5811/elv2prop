@@ -4,7 +4,7 @@ import os
 
 from cx_Freeze import Executable, setup
 
-version = '2017.08.25'
+version = '2018.02.15'
 
 
 def find_files():

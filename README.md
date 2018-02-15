@@ -17,17 +17,21 @@ You need to set the redirect url to `http://localhost:11843`.
 
 You need to make note of the "CLIENT ID" - you will need it later.
 
-## Download and Install
+## Download and Install (Windows)
 
-* Download the latest release from here: [https://github.com/monty5811/elv2prop/releases](https://github.com/monty5811/elv2prop/releases)
-* Then run the installer (you will get some warnings about the installer not being signed)
+ * Download the latest release from here: [https://github.com/monty5811/elv2prop/releases](https://github.com/monty5811/elv2prop/releases)
+ * Then run the installer (you will get some warnings about the installer not being signed)
 
-## First Run
+## Download and Install (macOS)
 
-**Do not run this tool when ProPresenter is open - it will not work and may corrupt your data.**
+*These instructions have not been tested*
 
- * Open the installation folder (by default `C:\Program Files (x86)\monty5811\elv2prop`)
- * Run the `elv2prop.exe` file
+ * Install python 3.6
+ * Create a virtualenv: `python -m venv venv`
+ * Activate the venv: `. venv/bin/activate`
+ * Install requirements: `pip install -r requirements.txt`
+ * Start the app: `python elv2prop.py`
+ * The app will open in your browser
  * You will be asked for the Client ID from above
  * Best guesses for the location of your ProPresenter data will be made, please check these are correct
  * Save the configuration
@@ -35,7 +39,24 @@ You need to make note of the "CLIENT ID" - you will need it later.
  * Choose the service you want to sync
  * Add any additional files from ProPresenter to the playlist
  * Click save
- * Close the elv2prop window
+ * Kill the `elv2prop` process in your terminal
+ * Open ProPresenter to view your new playlist
+
+## First Run
+
+**Do not run this tool when ProPresenter is open - it will not work and may corrupt your data.**
+
+ * Open the installation folder (by default `C:\Program Files (x86)\monty5811\elv2prop` on Windows)
+ * Run the `elv2prop.exe` file
+ * The app will open in your browser
+ * You will be asked for the Client ID from above
+ * Best guesses for the location of your ProPresenter data will be made, please check these are correct
+ * Save the configuration
+ * Login to Elvanto when prompted (note, your user account must have access to services on Elvanto)
+ * Choose the service you want to sync
+ * Add any additional files from ProPresenter to the playlist
+ * Click save
+ * Close the elv2prop console window (the black one)
  * Open ProPresenter to view your new playlist
 
 ## Development
@@ -75,7 +96,7 @@ The client is a webapp written in Elm (0.18) and is responsible for:
  * Presenting the UI to the user
  * Handling oauth tokens for Elvanto access
 
-The client runs in a web view.
+The client runs in the browser.
 
 #### Setup
 
