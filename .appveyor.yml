@@ -39,3 +39,15 @@ after_test:
 artifacts:
   - path: elv2prop_build.zip
   - path: dist\*
+
+deploy:
+  description: 'automated release from appveyor'
+  provider: GitHub
+  auth_token:
+    secure: 28BGnq7S0Hc/t+mxQ0P5hq0Pq7oerotFWocW119gtOQw/3zKwb3yEpYDDePr+4pi
+  artifact: dist\*
+  draft: true
+  prerelease: false
+  on:
+    branch: master                 # release from master branch only
+    appveyor_repo_tag: true        # deploy on tag push only
