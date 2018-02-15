@@ -38,7 +38,7 @@ os.environ['TK_LIBRARY'] = os.path.join(PYTHON_INSTALL_DIR, 'tcl', 'tk8.6')
 if __name__ == '__main__':
     setup(
         name='elv2prop',
-        version='2017.08.20',
+        version=version,
         description='elv2prop',
         options={
             'build_exe': build_exe_options,
