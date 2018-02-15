@@ -26,10 +26,12 @@ You need to make note of the "CLIENT ID" - you will need it later.
 
 *These instructions have not been tested*
 
- * Install python 3.6
+ * Install python 3.6, nodejs and yarn
+ * Clone this repo
  * Create a virtualenv: `python -m venv venv`
  * Activate the venv: `. venv/bin/activate`
  * Install requirements: `pip install -r requirements.txt`
+ * Build the client: `cd client && yarn && yarn build && cd ..`
  * Start the app: `python elv2prop.py`
  * The app will open in your browser
  * You will be asked for the Client ID from above
