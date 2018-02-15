@@ -1,4 +1,5 @@
 import os
+import shutil
 import sys
 import threading
 import webbrowser
@@ -17,6 +18,7 @@ except ImportError:
 
 
 LINUX = sys.platform.startswith('linux')
+WINDOWS = sys.platform.startswith('win')
 
 
 def start_browser(url):
@@ -79,6 +81,29 @@ def check_prop():
         check_prop()
 
 
+def move_dll():
+    '''Hack to move Python.Runtime.dll into lib'''
+    if not WINDOWS:
+        # skip if not on windows
+        return
+    if not getattr(sys, "frozen", False):
+        # skip if not frozen
+        return
+
+    dll_name = 'Python.Runtime.dll'
+    cur_dir = os.path.dirname(os.path.abspath(__file__))
+    dll_lib = os.path.join(cur_dir, 'lib', dll_name)
+
+    if os.path.exists(dll_lib):
+        # already there, skip
+        return
+
+    # dll is not in Lib, copy:
+    print(f'Moving {dll_name}')
+    shutil.copyfile(os.path.join(cur_dir, dll_name), dll_lib)
+
+
 if __name__ == '__main__':
+    move_dll()
     check_prop()
     main()
