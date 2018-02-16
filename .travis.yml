@@ -2,12 +2,12 @@ os:
 - osx
 language: generic
 env:
-  - PYTHON=3.6.4
-  - NODE=9
+  - PYTHON=3.6.4 NODE=9
+
 before_install:
   - brew update
   - brew install openssl readline
-  - brew update pyenv nvm
+  - brew upgrade pyenv nvm
   - pyenv install $PYTHON
   - export PYENV_VERSION=$PYTHON
   - export PATH="/Users/travis/.pyenv/shims:${PATH}"
