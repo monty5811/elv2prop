@@ -1,18 +1,29 @@
 os:
 - osx
-language: python
-python:
-- 3.6
-node_js: 8
-cache:
-  yarn: true
-  pip: true
+language: generic
+env:
+  - PYTHON=3.6.4
+  - NODE=9
+before_install:
+  - brew update
+  - brew install openssl readline
+  - brew update pyenv nvm
+  - pyenv install $PYTHON
+  - export PYENV_VERSION=$PYTHON
+  - export PATH="/Users/travis/.pyenv/shims:${PATH}"
+  - python -m venv venv
+  - source venv/bin/activate
+  - python --version
+  - nvm install %NODE
+  - nvm use %NODE
 install:
-- pip install -r requirements-dev.txt
-- cd client && yarn
+  - python -m pip install -U pip
+  - pip install -r requirements-dev.txt
+  - npm install -g yarn
+  - cd client && yarn && cd ..
 script:
-- cd client && yarn build && cd ..
-- python setup.py bdist_mac
+  - cd client && yarn build && cd ..
+  - python setup.py bdist_mac
 deploy:
   provider: releases
   file_glob: true
