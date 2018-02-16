@@ -48,7 +48,7 @@ You need to make note of the "CLIENT ID" - you will need it later.
 
 **Do not run this tool when ProPresenter is open - it will not work and may corrupt your data.**
 
- * Open the installation folder (by default `C:\Program Files (x86)\monty5811\elv2prop` on Windows)
+ * Open the installation folder (by default `C:\Program Files\monty5811\elv2prop` on Windows)
  * Run the `elv2prop.exe` file
  * The app will open in your browser
  * You will be asked for the Client ID from above
