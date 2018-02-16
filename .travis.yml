@@ -1,0 +1,24 @@
+os:
+- osx
+language: python
+python:
+- 3.6
+node_js: 8
+cache:
+  yarn: true
+  pip: true
+install:
+- pip install -r requirements-dev.txt
+- cd client && yarn
+script:
+- cd client && yarn build && cd ..
+- python setup.py bdist_mac
+deploy:
+  provider: releases
+  file_glob: true
+  file: dist/*
+  skip_cleanup: true
+  on:
+    tags: true
+  api-key:
+    secure: XpQRepHdIvSIFfaS1UGKcDnV5wKdduWJilnRCK530igDJT9Abzr2AHIN501nBaTFHT6Si/vO/ArUaziq9vyBo07JlNFu5s9lLyt0f5WRBkRHYcCdu3AKJGYE0iYN7VYeOUXq+aCdtC1gaLxf8dcj0wjB4cvGJw7f5jT85WwbAktt2212TDh+aaLTuVlRTVeHROkleDAJR1FoV+7nvpgPKid5C9cHthaULdn0XelYjmQcHuxkKXlpp5VfUVvLc2PT2GM/RqWwoMztVs9U3DrxoJTl0BBohvCWta9b/JOqpStHvPjGvp6WTucTLS1pcsRWmjIsLJFhaAvc3d1BcT0fRaswkwpntKHWXOBqCeq1pVgmWbuiS/znIXapoUslzO3fX3klUwH4GsylgNFOxmNOhAneaIo/D1KESAlxx/2MFioQ1DXJ8OWx9O80YjlTHiM+GZo06VCn5fQW6UdFp1InL9ocC+DHAZrhdzGfdNo8sFLtALk80PSANYXpbX+OG3Mu0ezzAmryIaLB3ae1VOoRopMt+pCyCQ6fnKJ18vyukQ+hIy7+FTQ8rXofV5eC161Bymbsz/iTkR1CxNecvnbF3aJHCrnraaAWfidML3xuOf8OpiZxlzNQkOnl7RoueOHFOLBZ3pRw9rtFAAg/C28/4iTmq7KH/hyzul0LrPZjwMo=

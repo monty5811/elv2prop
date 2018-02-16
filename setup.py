@@ -31,6 +31,10 @@ bdist_msi_options = {
     'initial_target_dir': rf'[ProgramFilesFolder]\{company_name}\{product_name}',
 }
 
+bdist_mac_options = {
+    'bundle_name': 'elv2ProP',
+}
+
 PYTHON_INSTALL_DIR = os.path.dirname(os.path.dirname(os.__file__))
 os.environ['TCL_LIBRARY'] = os.path.join(PYTHON_INSTALL_DIR, 'tcl', 'tcl8.6')
 os.environ['TK_LIBRARY'] = os.path.join(PYTHON_INSTALL_DIR, 'tcl', 'tk8.6')
@@ -43,6 +47,7 @@ if __name__ == '__main__':
         options={
             'build_exe': build_exe_options,
             'bdist_msi': bdist_msi_options,
+            'bdist_mac': bdist_mac_options,
         },
         executables=[Executable('elv2prop.py', base=None)]
     )
