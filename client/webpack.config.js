@@ -2,7 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 
 if (process.env.WATCH) {
-  elmLoader = 'elm-webpack-loader?debug=true';
+  elmLoader = 'elm-webpack-loader?debug=true?warn=true';
   plugins = [];
 } else {
   elmLoader = 'elm-webpack-loader';

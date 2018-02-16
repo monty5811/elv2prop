@@ -10,6 +10,14 @@ def flatten_songs(s):
         s['songs'] = s['songs']['song']
     return s
 
+def add_pretty_date(s):
+    d = dt.strptime(s['date'], '%Y-%m-%d %H:%M:%S')
+    fmt = '%A %d %b - %H:%M'
+    s['pretty_date'] = d.strftime(fmt)
+    print(s)
+
+    return s
+
 
 def get_services(token):
     today = dt.today() - td(days=6)

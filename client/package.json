@@ -21,7 +21,7 @@
     "postcss": "^6.0.9",
     "postcss-cssnext": "^3.0.2",
     "postcss-import": "^11.1.0",
-    "shoelace-css": "^1.0.0-beta17",
+    "tailwindcss": "^0.4.1",
     "webpack": "^3.11.0"
   }
 }

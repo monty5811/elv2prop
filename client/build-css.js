@@ -8,6 +8,7 @@ const CSSnext = require('postcss-cssnext');
 const FS = Promise.promisifyAll(require('fs'));
 const Path = require('path');
 const PostCSS = require('postcss');
+const tailwindcss = require('tailwindcss');
 
 function buildStyles() {
   return Promise.resolve()
@@ -25,6 +26,7 @@ function buildStyles() {
 
       return PostCSS([
         AtImport,
+        tailwindcss('./tw_config.js'),
         CSSnext({
           features: {
             rem: false
@@ -33,7 +35,7 @@ function buildStyles() {
         CSSnano({
           autoprefixer: false,
           safe: true
-        })
+        }),
       ]).process(css, { from: file });
     })
 

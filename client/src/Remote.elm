@@ -1,11 +1,11 @@
-module Remote exposing (..)
+module Remote exposing (chooseReq, confirmReq, fetchServices, saveConfig)
 
 import Elvanto exposing (Service, decodeService, encodeService)
 import Http
 import Json.Decode as Decode
 import Json.Encode as Encode
-import Messages exposing (..)
-import Models exposing (..)
+import Messages exposing (Msg(..))
+import Models exposing (Config, Match, decodeConfig, decodeMatch, encodeConfig, encodeMatches)
 
 
 post : String -> List ( String, Encode.Value ) -> Decode.Decoder a -> Http.Request a

@@ -1,10 +1,10 @@
-module Main exposing (..)
+module Main exposing (main)
 
 import Dict
-import Messages exposing (..)
-import Models exposing (..)
+import Messages exposing (Msg(..))
+import Models exposing (Flags, Model, Step(..), initialModel)
 import Navigation
-import Update exposing (..)
+import Update exposing (update)
 import View exposing (view)
 
 

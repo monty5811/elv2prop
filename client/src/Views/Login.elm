@@ -3,6 +3,7 @@ module Views.Login exposing (view)
 import Html exposing (Html)
 import Html.Attributes as A
 import Models exposing (Model)
+import Views.Util exposing (blueButton)
 
 
 view : Model -> List (Html msg)
@@ -13,11 +14,8 @@ view model =
 
         Just clientId ->
             [ Html.h4 [] [ Html.text "Grant access to Elvanto" ]
-            , Html.a
-                [ A.class "button button-primary button-lg"
-                , A.href <| oauthLink clientId model.host
-                ]
-                [ Html.text "Login" ]
+            , Html.a [ A.href <| oauthLink clientId model.host ]
+                [ blueButton [] [ Html.text "Login" ] ]
             ]
 
 
