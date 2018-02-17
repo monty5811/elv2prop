@@ -3,7 +3,7 @@ import json
 from flask import Flask, abort, jsonify, render_template, request
 
 from .config import save_config_to_file
-from .elvanto import flatten_songs, get_services
+from .elvanto import add_pretty_date, flatten_songs, get_services
 from .prop import (add_song_to_playlist, create_new_playlist, find_song_files,
                    write_playlist_to_file)
 
@@ -36,7 +36,7 @@ def fetch():
         services = get_services(token)
     except Exception:
         abort(503)
-    services = [flatten_songs(s) for s in services]
+    services = [add_pretty_date(flatten_songs(s)) for s in services]
     return jsonify(services)
 
 

@@ -1,6 +1,22 @@
-module Models exposing (..)
+module Models
+    exposing
+        ( Alert
+        , AlertType(..)
+        , Config
+        , Flags
+        , LoadingStatus(..)
+        , Match
+        , Model
+        , Step(..)
+        , decodeConfig
+        , decodeMatch
+        , encodeConfig
+        , encodeMatches
+        , initialModel
+        , initialStep
+        )
 
-import Elvanto exposing (Service, ServiceType, Song)
+import Elvanto exposing (Service)
 import Json.Decode as Decode
 import Json.Decode.Pipeline as P
 import Json.Encode as Encode
@@ -79,7 +95,7 @@ initialStep config configFromFile maybeToken =
 
         True ->
             case maybeToken of
-                Just token ->
+                Just _ ->
                     Sync
 
                 Nothing ->

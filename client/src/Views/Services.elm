@@ -6,13 +6,14 @@ import Html.Attributes as A
 import Html.Events as E
 import Messages exposing (Msg(ChooseService, FetchServices))
 import Models exposing (LoadingStatus(Finished, Loading, NotAsked), Model)
+import Views.Util exposing (greenButton)
 
 
 view : Model -> Html Msg
 view model =
     case model.fetchStatus of
         NotAsked ->
-            Html.button [ A.class "button button-success", E.onClick FetchServices ] [ Html.text "Fetch Elvanto Services" ]
+            greenButton [ E.onClick FetchServices ] [ Html.text "Fetch Elvanto Services" ]
 
         Loading ->
             loadingIndicator
@@ -24,10 +25,8 @@ view model =
 loadingIndicator : Html Msg
 loadingIndicator =
     Html.div []
-        [ Html.h3 [] [ Html.text "Loading..." ]
-        , Html.div [ A.class "progress progress-lg progress-success progress-indeterminate" ]
-            [ Html.div [ A.class "progress-bar" ] []
-            ]
+        [ Html.h3 [ A.class "pb-2" ] [ Html.text "Loading..." ]
+        , Html.div [ A.class "loader" ] []
         ]
 
 
@@ -43,20 +42,33 @@ serviceList services =
                     "No services found on Elvanto"
     in
     Html.div []
-        [ Html.h3 [] [ Html.text heading ]
-        , Html.ul [ A.class "serviceList" ] <| List.map serviceView services
+        [ Html.h3 [ A.class "pb-2" ] [ Html.text heading ]
+        , Html.div [] <| List.map serviceView services
         ]
 
 
 serviceView : Service -> Html Msg
 serviceView s =
-    case List.length s.songs > 0 of
-        True ->
-            Html.li
-                [ A.class "serviceItem", E.onClick <| ChooseService s ]
-                [ Html.text <| s.name ++ " (" ++ s.date ++ ")"
-                , Html.span [ A.class "badge badge-success float-right" ] [ Html.text <| toString <| List.length s.songs ]
+    Html.div [ A.class <| serviceItemClass s ]
+        [ Html.div
+            [ A.class "flex", E.onClick <| ChooseService s ]
+            [ Html.div [ A.class "m-auto w-5/6" ]
+                [ Html.text s.name
+                , Html.div [ A.class "pl-2 text-xs" ] [ Html.text <| " (" ++ s.prettyDate ++ ")" ]
                 ]
+            , Html.div [ A.class "bg-green-dark rounded-full px-2 py-2 text-sm w-8 mx-auto text-center" ]
+                [ Html.text <| toString <| List.length s.songs ]
+            ]
+        ]
 
-        False ->
-            Html.li [ A.class "serviceItem disabled" ] [ Html.text <| s.name ++ " (" ++ s.date ++ ")" ]
+
+serviceItemClass : Service -> String
+serviceItemClass s =
+    let
+        base =
+            "my-4 pl-4 py-4 select-none shadow-md"
+    in
+    if List.length s.songs < 1 then
+        base ++ " bg-grey-light cursor-not-allowed"
+    else
+        base ++ " bg-white cursor-pointer"

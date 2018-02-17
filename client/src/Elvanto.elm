@@ -8,6 +8,7 @@ import Json.Encode as Encode
 type alias Service =
     { id : String
     , date : String
+    , prettyDate : String
     , description : String
     , name : String
     , service_type : ServiceType
@@ -33,6 +34,7 @@ decodeService =
     P.decode Service
         |> P.required "id" Decode.string
         |> P.required "date" Decode.string
+        |> P.required "pretty_date" Decode.string
         |> P.required "description" Decode.string
         |> P.required "name" Decode.string
         |> P.required "service_type" decodeServiceType

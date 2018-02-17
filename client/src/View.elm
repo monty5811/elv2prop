@@ -1,23 +1,22 @@
-module View exposing (..)
+module View exposing (view)
 
-import Elvanto exposing (Service)
 import Html exposing (Html)
 import Html.Attributes as A
 import Html.Events as E
-import Messages exposing (..)
-import Models exposing (..)
-import Rocket exposing ((=>))
+import Messages exposing (Msg(..))
+import Models exposing (Alert, AlertType(..), Model, Step(..))
 import Views.Login
 import Views.SelectSongs
 import Views.Services
 import Views.Setup
+import Views.Util exposing (blueButton)
 
 
 view : Model -> Html Msg
 view model =
     Html.div [ A.id "main" ]
         [ navbar model
-        , Html.div [ A.id "content" ] <|
+        , Html.div [ A.class "my-8 mx-4 w-100 min-h-screen" ] <|
             List.concat
                 [ alerts model.alerts
                 , viewHelper model
@@ -52,15 +51,8 @@ navbar model =
 
         _ ->
             Html.nav [ A.id "navbar" ]
-                [ Html.h1
-                    [ A.style [ "display" => "block" ] ]
-                    [ Html.text "Elv -> ProP" ]
-                , Html.a
-                    [ A.class "button button-primary button-lg"
-                    , A.style [ "display" => "block" ]
-                    , E.onClick GoToSetup
-                    ]
-                    [ Html.text "Setup" ]
+                [ Html.h1 [] [ Html.text "Elv -> ProP" ]
+                , settingsLink model.step
                 ]
 
 
@@ -71,7 +63,12 @@ alerts a =
 
 alert : Alert -> Html Msg
 alert a =
-    Html.div [ A.class <| "alert " ++ alertTypeHelper a.type_ ] [ Html.text a.message ]
+    Html.div [ A.attribute "role" "alert" ]
+        [ alertHeading a.type_
+        , Html.div [ A.class "border border-t-0 border-red-light rounded-b bg-red-lightest px-4 py-3 text-red-dark" ]
+            [ Html.p [] [ Html.text a.message ]
+            ]
+        ]
 
 
 settingsLink : Step -> Html Msg
@@ -81,14 +78,14 @@ settingsLink step =
             Html.text ""
 
         _ ->
-            Html.button [ A.class "button button-primary", E.onClick GoToSetup ] [ Html.text "Setup" ]
+            blueButton [ A.class "w-full", E.onClick GoToSetup ] [ Html.text "Setup" ]
 
 
-alertTypeHelper : AlertType -> String
-alertTypeHelper t =
+alertHeading : AlertType -> Html Msg
+alertHeading t =
     case t of
         Success ->
-            "alert-success"
+            Html.div [ A.class "bg-green text-white font-bold rounded-t px-4 py-2" ] [ Html.text "Success" ]
 
         Danger ->
-            "alert-danger"
+            Html.div [ A.class "bg-red text-white font-bold rounded-t px-4 py-2" ] [ Html.text "Uh oh!" ]

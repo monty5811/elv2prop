@@ -1,15 +1,23 @@
-module Update exposing (..)
+module Update exposing (update)
 
 import Http
-import Messages exposing (..)
-import Models exposing (..)
+import Messages exposing (Msg(..))
+import Models
+    exposing
+        ( Alert
+        , AlertType(..)
+        , LoadingStatus(..)
+        , Model
+        , Step(..)
+        , initialStep
+        )
 import Ports exposing (deleteTokenData, saveTokenData)
-import Remote exposing (..)
+import Remote exposing (chooseReq, confirmReq, fetchServices, saveConfig)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case Debug.log "msg" msg of
+    case msg of
         NoOp ->
             model ! []
 
@@ -59,7 +67,7 @@ update msg model =
                     { model
                         | fetchStatus = Loading
                         , filesFilter = ""
-                        , allFiles = List.map (\( _, s ) -> ( False, s )) model.allFiles
+                        , allFiles = List.map (\( _, s_ ) -> ( False, s_ )) model.allFiles
                     }
                         ! [ confirmReq s ms extras ]
 
