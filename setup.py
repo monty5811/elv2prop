@@ -4,7 +4,7 @@ import os
 
 from cx_Freeze import Executable, setup
 
-version = '2018.02.15'
+version = '2018.02.17'
 
 
 def find_files():
@@ -49,5 +49,13 @@ if __name__ == '__main__':
             'bdist_msi': bdist_msi_options,
             'bdist_mac': bdist_mac_options,
         },
-        executables=[Executable('elv2prop.py', base=None)]
+        executables=[
+            Executable(
+                'elv2prop.py',
+                base=None,
+                shortcutName="elv2prop",
+                shortcutDir="DesktopFolder",
+                icon='icons/icon.ico',
+                )
+            ],
     )
