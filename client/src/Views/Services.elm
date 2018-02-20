@@ -39,7 +39,7 @@ serviceList services =
                     "Choose a service to sync"
 
                 False ->
-                    "No services found on Elvanto"
+                    ""
     in
     Html.div []
         [ Html.h3 [ A.class "pb-2" ] [ Html.text heading ]

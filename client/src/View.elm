@@ -63,9 +63,9 @@ alerts a =
 
 alert : Alert -> Html Msg
 alert a =
-    Html.div [ A.attribute "role" "alert" ]
+    Html.div [ A.attribute "role" "alert", A.class "mb-4" ]
         [ alertHeading a.type_
-        , Html.div [ A.class "border border-t-0 border-red-light rounded-b bg-red-lightest px-4 py-3 text-red-dark" ]
+        , Html.div [ A.class <| alertMainClass a.type_ ]
             [ Html.p [] [ Html.text a.message ]
             ]
         ]
@@ -79,6 +79,16 @@ settingsLink step =
 
         _ ->
             blueButton [ A.class "w-full", E.onClick GoToSetup ] [ Html.text "Setup" ]
+
+
+alertMainClass : AlertType -> String
+alertMainClass t =
+    case t of
+        Success ->
+            "border border-t-0 border-green-light rounded-b bg-green-lightest px-4 py-3 text-green-dark"
+
+        Danger ->
+            "border border-t-0 border-red-light rounded-b bg-red-lightest px-4 py-3 text-red-dark"
 
 
 alertHeading : AlertType -> Html Msg

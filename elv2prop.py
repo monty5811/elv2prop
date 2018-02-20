@@ -6,7 +6,6 @@ import webbrowser
 from time import sleep
 
 import psutil
-
 from server import server
 from server.config import load_from_file
 from setup import version

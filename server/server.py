@@ -1,11 +1,14 @@
 import json
 
-from flask import Flask, abort, jsonify, render_template, request
+import requests
+from flask import (Flask, abort, jsonify, make_response, render_template,
+                   request)
 
 from .config import save_config_to_file
-from .elvanto import add_pretty_date, flatten_songs, get_services
+from .elvanto import ElvantoApiError, ElvantoNoServices, get_services
 from .prop import (add_song_to_playlist, create_new_playlist, find_song_files,
                    write_playlist_to_file)
+
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 
@@ -34,9 +37,19 @@ def fetch():
     token = request.json.get('token', '')
     try:
         services = get_services(token)
-    except Exception:
-        abort(503)
-    services = [add_pretty_date(flatten_songs(s)) for s in services]
+    except requests.exceptions.HTTPError:
+        resp = make_response(jsonify({'msg': 'We encountered a problem talking to Elvanto, please try again'}))
+        resp.status_code = 503
+        return resp
+    except ElvantoApiError as e:
+        resp = make_response(jsonify({'msg': 'Elvanto API Error', 'extra': e.args[0]}))
+        resp.status_code = 503
+        return resp
+    except ElvantoNoServices:
+        resp = make_response(jsonify({'msg': 'No services found on Elvanto'}))
+        resp.status_code = 404
+        return resp
+
     return jsonify(services)
 
 
@@ -48,6 +61,7 @@ def choose():
     # find matching songs and return to client
     files = find_song_files(app.config.C, songs=titles)
     return jsonify(files)
+
 
 
 @app.route('/confirm', methods=['POST'])

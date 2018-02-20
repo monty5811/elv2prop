@@ -12,7 +12,7 @@ import Models
         , initialStep
         )
 import Ports exposing (deleteTokenData, saveTokenData)
-import Remote exposing (chooseReq, confirmReq, fetchServices, saveConfig)
+import Remote exposing (FetchError(..), bodyToFetchError, chooseReq, confirmReq, fetchServices, saveConfig)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -30,21 +30,10 @@ update msg model =
                     { model | fetchStatus = Loading } ! [ fetchServices token, saveTokenData token ]
 
         ReceiveServices (Ok services) ->
-            { model | services = services, fetchStatus = Finished } ! []
+            { model | services = services, fetchStatus = Finished, alerts = [] } ! []
 
         ReceiveServices (Err e) ->
-            case e of
-                Http.BadStatus _ ->
-                    ( { model
-                        | fetchStatus = NotAsked
-                        , step = OauthLink
-                        , oauthToken = Nothing
-                      }
-                    , deleteTokenData ()
-                    )
-
-                _ ->
-                    ( { model | fetchStatus = Finished } |> addDanger fetchFailedMsg, Cmd.none )
+            serviceError e model
 
         ChooseService s ->
             { model | chosenService = Just s, fetchStatus = Loading, alerts = [] } ! [ chooseReq s ]
@@ -52,8 +41,8 @@ update msg model =
         ReceiveMatches (Ok ms) ->
             { model | matches = ms, step = Confirm, fetchStatus = Finished } ! []
 
-        ReceiveMatches (Err _) ->
-            ( { model | fetchStatus = Finished } |> addDanger fetchFailedMsg, Cmd.none )
+        ReceiveMatches (Err e) ->
+            ( { model | fetchStatus = Finished } |> addDanger (fetchFailedMsg e), Cmd.none )
 
         ConfirmWrite ms ->
             let
@@ -80,8 +69,8 @@ update msg model =
         ReceiveConfirm (Ok _) ->
             ( { model | step = Sync, fetchStatus = Finished } |> addSuccess "Playlist saved", Cmd.none )
 
-        ReceiveConfirm (Err _) ->
-            ( { model | step = Sync, fetchStatus = Finished } |> addDanger "That didn't work, your playlist was not saved", Cmd.none )
+        ReceiveConfirm (Err e) ->
+            ( { model | step = Sync, fetchStatus = Finished } |> addDanger (playlistSaveMsg e), Cmd.none )
 
         UpdateClientId ctor c id ->
             { model | step = ctor { c | client_id = Just id } } ! []
@@ -140,6 +129,94 @@ addDanger msg model =
     { model | alerts = Alert Danger msg :: model.alerts }
 
 
-fetchFailedMsg : String
-fetchFailedMsg =
-    "That didn't work, try reloading the page."
+fetchFailedMsg : Http.Error -> String
+fetchFailedMsg err =
+    "That didn't work, try reloading the page.\n\n(" ++ niceHttpError err ++ ")"
+
+
+playlistSaveMsg : Http.Error -> String
+playlistSaveMsg err =
+    "That didn't work, your playlist was not saved\n\n(" ++ niceHttpError err ++ ")"
+
+
+niceHttpError : Http.Error -> String
+niceHttpError err =
+    case err of
+        Http.BadStatus { status } ->
+            status.message
+
+        Http.BadUrl _ ->
+            "Bad url"
+
+        Http.Timeout ->
+            "The request timed out"
+
+        Http.NetworkError ->
+            "Network error"
+
+        Http.BadPayload _ _ ->
+            "Bad Payload"
+
+
+serviceError : Http.Error -> Model -> ( Model, Cmd Msg )
+serviceError e model =
+    case e of
+        Http.BadStatus resp ->
+            let
+                respError =
+                    bodyToFetchError resp.body
+            in
+            case respError of
+                HttpError ->
+                    ( { model
+                        | fetchStatus = NotAsked
+                        , step = Sync
+                      }
+                        |> addDanger "We encountered an issue talking to Elvanto, please try again."
+                    , Cmd.none
+                    )
+
+                NoServices ->
+                    ( { model
+                        | fetchStatus = NotAsked
+                        , step = Sync
+                      }
+                        |> addDanger "No Services Found on Elvanto"
+                    , Cmd.none
+                    )
+
+                Elvanto elvError ->
+                    case elvError.code of
+                        102 ->
+                            -- auth error, logout user in case they need to log in again
+                            ( { model
+                                | fetchStatus = NotAsked
+                                , step = OauthLink
+                                , oauthToken = Nothing
+                              }
+                                |> addDanger elvError.message
+                            , deleteTokenData ()
+                            )
+
+                        _ ->
+                            ( { model
+                                | fetchStatus = NotAsked
+                                , step = Sync
+                              }
+                                |> addDanger elvError.message
+                            , Cmd.none
+                            )
+
+                Unknown ->
+                    -- unknown error, logout user in case they need to log in again
+                    ( { model
+                        | fetchStatus = NotAsked
+                        , step = OauthLink
+                        , oauthToken = Nothing
+                      }
+                        |> addDanger "We encountered an error, I'm not sure what happened. Try logging in again."
+                    , deleteTokenData ()
+                    )
+
+        _ ->
+            ( { model | fetchStatus = Finished } |> addDanger (fetchFailedMsg e), Cmd.none )
